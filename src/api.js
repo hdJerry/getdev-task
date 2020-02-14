@@ -7,7 +7,6 @@ let urlA = process.env.VUE_APP_POST_URLA;
 let urlB = process.env.VUE_APP_POST_URLB;
 
 
-console.log(urlA);
 
 
 function builUrlA( path ){
