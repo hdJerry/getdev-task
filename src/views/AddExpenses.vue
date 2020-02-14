@@ -32,16 +32,20 @@
 
          <div class="form-group">
            <label for="firstname">Date</label>
-           <input type="date" name="date" value="" v-model="date" class="form-control details" id="date">
+           <input type="date" name="date" v-model="date" class="form-control details" id="date">
          </div>
          <div class="form-group">
            <label for="lastname">VALUE</label>
-           <input type="text" name="cost" v-model="cost" value="" class="form-control details" id="cost">
+           <input type="text" name="cost" v-model="cost" @input="calVat" class="form-control details" id="cost">
+         </div>
+         <div class="form-group">
+           <label for="lastname">VAT</label>
+           <input type="text" name="vat" v-model="vat" class="form-control details" id="vat" :disabled="cannot">
          </div>
 
          <div class="form-group">
            <label for="email">Reason</label>
-           <textarea name="reason" value="" v-model="reason" class="form-control details" id="reason" col="8" row="5"></textarea>
+           <textarea name="reason" v-model="reason" class="form-control details" id="reason" col="8" row="5"></textarea>
          </div>
          <button class="btn btn-success btn-block" v-if="!isCreating">Add Expenses</button>
          <button class="btn btn-success btn-block" type="button" disabled v-else>
@@ -60,7 +64,7 @@
 
 <script type="text/javascript">
 
-let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+import api from '../api';
 
 
 export default{
@@ -68,15 +72,33 @@ export default{
     return {
       datas : [],
       date:'',
-      cost : '',
+      cost : 0,
       reason : '',
+      vat: 0,
       success : 2,
       isCreating: false,
       message : "",
       exclaim : "",
+      cannot : true
     }
   },
   methods:{
+
+    calVat(event){
+
+      let value = event.target.value;
+
+      // console.log(());
+      // if(this.cost > 0  || this.cosVt !== ""){
+      //   this.vat = 0.20 * this.cost
+      //
+      // }else {
+      //
+      //   // this.cost = 0
+      //   this.vat = 0
+      // }
+
+    },
 
     async createNow(){
       this.isCreating = true;
@@ -85,7 +107,7 @@ export default{
       // let finalArr = Array.from(employees);
 
       if(
-        this.cost.trim() !== "" &&
+        this.cost !== 0 &&
         this.reason.trim() !== "" &&
         this.date.trim() !== ""
       ){
@@ -96,7 +118,25 @@ export default{
           date : this.date
         }
 
-        console.log(datas);
+        api
+        .addExpenses(datas,'save/expenses')
+        .then((resp)=>{
+
+          if(resp.status === 1){
+
+            localStorage.setItem('expenses',JSON.stringify(resp.datas.rows))
+            localStorage.setItem('sum',JSON.stringify(resp.datas.sum))
+
+          }
+
+          console.log(resp);
+
+        })
+        .catch((err)=>{
+
+          console.log(err);
+
+        })
 
 
       }else {

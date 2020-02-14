@@ -1,4 +1,6 @@
 
+// console.log(process.env);
+
 export default {
     data(){
         return {
@@ -25,7 +27,7 @@ export default {
 
          this.from = start - (Number(this.size) - 1);
          this.to = Math.min(end-1, this.datas.length);
-         
+
         return this.datas.filter(val => {
             return val.email.match(this.search)
         }).slice(start, end)
