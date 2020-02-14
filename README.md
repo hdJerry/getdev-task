@@ -25,7 +25,7 @@ npm run test
 npm run lint
 ```
 
-### create a .evn file in the main directory and put the below values
+### create a .evn file in the main directory if it doesn't exist and put the below values in it
 
 ```
 VUE_APP_DATABASE_URL = postgres://jvmsevdfbiikwx:98e37a798cd3d8fb8ca28c1e4f3b470166875232cdace71ce4ac6d01c1ffae22@ec2-35-172-85-250.compute-1.amazonaws.com:5432/d1gee34930281a,
